@@ -1,9 +1,10 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import Utilisateur from '../models/user.model.js';
+import Client from '../models/client.model.js';
+import Mecanicien from '../models/mecanicien.model.js';
 
 export const checkIfUserExists = async (email) => {
-  const userExist = await Utilisateur.findOne({ email });
+  const userExist = await Client.findOne({ email }) || await Mecanicien.findOne({ email });
   return userExist;
 };
 

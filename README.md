@@ -1,4 +1,4 @@
-# m1p12mean-Magali-Lo-c--BO
+# m1p12mean--Backend-Loic-Magali
 
 yarn install
 
