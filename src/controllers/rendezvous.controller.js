@@ -1,8 +1,8 @@
 import { getRendezVousPrisParClient, 
          getDemandesEnAttenteParClient, 
-         getDetailRendezVous } from "../services/rendezvous.service.js";
+         getDetailRendezVous, createRendezVous } from "../services/rendezvous.service.js";
 import { createDemandeRendezVous } from "../services/demandeRendezVous.service.js";
-import { createSuiviRendezVous } from "../services/suiviRendezVous.service.js";
+import { createSuiviRendezVous, updateSuiviRendezVous } from "../services/suiviRendezVous.service.js";
 
 export const getRendezVousClient = async (req, res) => {
     try {
@@ -62,3 +62,28 @@ export const CreateDemandeRendezVous = async (req, res) => {
     }
 };
 
+export const CreateRendezVous = async (req, res) => {
+    const { demandeRendezVous, date, dureeJour, mecanicien, factureModelName} = req.body;
+    if (!demandeRendezVous || !date || !dureeJour || !mecanicien) {
+      return res.status(400).json({ message: 'Veuillez remplir les champs requis.' });
+    }
+    try {
+      const data = {demandeRendezVous, date, dureeJour, mecanicien, factureModelName };
+      const rdv = await createRendezVous(data);
+      return res.status(201).json({ message: 'Rendez-Vous créé avec succès', rendezVous: rdv });
+    } catch (error) {
+      console.error('Erreur lors de la creation de rendez-vous :', error);
+      return res.status(500).json({ message: 'Erreur interne du serveur.' });
+    }
+};
+
+export const UpdateSuiviRendezVousController = async (req, res) => {
+  const { id } = req.params;
+  const updateData = req.body;
+  try {
+      const updatedSuiviRendezVous = await updateSuiviRendezVous(id, updateData);
+      res.status(200).json(updatedSuiviRendezVous);
+  } catch (error) {
+      res.status(400).json({ error: error.message });
+  }
+};

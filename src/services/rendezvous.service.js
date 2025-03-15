@@ -2,6 +2,27 @@ import { RendezVousModel } from '../models/rendezVous.model.js';
 import { DemandeRendezVousModel } from '../models/demandeRendezVous.model.js';
 import {SuiviRendezVousModel} from '../models/suiviRendezVous.model.js';
 
+export const createRendezVous = async (data) => {
+    // const rendezVous = new RendezVousModel(data);
+    // return await rendezVous.save();
+    const { demandeRendezVous, date, dureeJour, mecanicien } = data;
+    const rendezVous = new RendezVousModel({
+        demandeRendezVous,
+        date,
+        dureeJour,
+        mecanicien
+    });
+    const savedRendezVous = await rendezVous.save();
+    const suiviRendezVous = new SuiviRendezVousModel({
+        rendezVous: savedRendezVous._id,
+        etat: 'Confirmé',
+        progression: 0
+    });
+    await suiviRendezVous.save();
+
+    return savedRendezVous;
+};
+
 export const getRendezVousPrisParClient = async (clientId) => {
     return await RendezVousModel.find({ 'demandeRendezVous.client': clientId }).populate('demandeRendezVous').populate('mecanicien').populate('facture');
 };

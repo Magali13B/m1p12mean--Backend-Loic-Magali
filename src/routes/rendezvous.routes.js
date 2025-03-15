@@ -1,9 +1,10 @@
 import {Router} from 'express';
-import { getRendezVousClient, getDetailRendezVousController, CreerSuiviController, CreateDemandeRendezVous } from '../controllers/rendezvous.controller.js';
+import { getRendezVousClient, getDetailRendezVousController, CreerSuiviController, CreateDemandeRendezVous, CreateRendezVous } from '../controllers/rendezvous.controller.js';
 
 
 const router = Router();
 
+router.post('/screen', CreateRendezVous);
 router.get('/client', getRendezVousClient);
 router.get('/:id', getDetailRendezVousController);
 router.post('/suivi', CreerSuiviController);
